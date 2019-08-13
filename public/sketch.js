@@ -1,0 +1,84 @@
+var socket;
+var flag;
+var width   = window.innerWidth;
+var height  = window.innerHeight;
+
+//socket = io.connect('http://localhost:3000');
+socket = io.connect('http://192.168.91.245:3000');
+
+socket.on('connect', function (socketObj) {
+  socket.emit('p5socket', {'idp5' : socket.id});
+});
+
+var lastClick={};
+var old = {};
+var mousePosition={};
+
+// on Click Handle
+function onClickHandle(data) {
+  var x = data.x*window.innerWidth; 
+  var y = data.y*window.innerHeight;
+  console.log('---' + data.x + ' =' + lastClick.x );
+  stroke(30);
+  strokeWeight(2);
+  if (lastClick != {}){
+    //line(x,y, lastClick.x, lastClick.y);
+  }
+  ellipse(x,y, 4,4);
+  lastClick = {'x' : x, 'y': y};
+}
+
+
+// on move mouse Handle
+function onMoveHandle(data) {
+  console.log('-- Mouse msg received' + old.x);
+  var x = data.x*window.innerWidth; 
+  var y = data.y*window.innerHeight;
+  var lastX = data.lastX*window.innerWidth; 
+  var lastY = data.lastY*window.innerHeight;
+
+  if (old != {}){
+    fill(255);
+    stroke(data.color);
+    strokeWeight(2);
+    line(x,y, lastX, lastY);
+  }
+  old = {
+    'x' : x,
+    'y' : y
+  };
+}
+
+// on scroll Handle
+function onScrollHandle(data) {
+  console.log('-- Scroll msg received' + data.position);
+  var position = data.position; 
+  stroke(data.color);
+  strokeWeight(2);
+  line(data.lastX*window.innerWidth-20, data.lastY*window.innerHeight+position, data.lastX*window.innerWidth+20, data.lastY*window.innerHeight+position);
+}
+
+
+
+// processing sketch
+function setup() {
+    createCanvas(window.innerWidth, window.innerHeight);
+    background(255);
+    fill(255);
+    stroke(255);
+    strokeWeight(2);
+
+    socket.on('clickEvent', onClickHandle);
+      
+    socket.on('mouse2', onMoveHandle);
+
+    socket.on('scroll', onScrollHandle);
+    
+    
+}
+
+
+
+function draw() {
+  
+}
