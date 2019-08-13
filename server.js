@@ -81,3 +81,4 @@ function getPaletteColor(){
     return palet[Math.floor(Math.random() * palet.length)]; 
 }
 
+
