@@ -13,6 +13,10 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/sketch2', function(req, res){
+    res.sendFile(__dirname + '/sketch2.html');
+});
+
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
