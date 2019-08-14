@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var PORTCONFIG = 4000;
 
 var p5SocketId = '';
 var clientColorArray = {};
@@ -15,8 +16,8 @@ app.get('/', function(req, res){
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(PORTCONFIG, function(){
+  console.log('listening on *:' + PORTCONFIG);
 });
 
 io.on('connection', function(socket){
