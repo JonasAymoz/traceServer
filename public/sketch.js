@@ -4,8 +4,7 @@ var width   = window.innerWidth;
 var height  = window.innerHeight;
 
 //socket = io.connect('http://localhost:3000');
-socket = io.connect('https://jonasaymoz.fr/ctc/traceServer/');
-
+socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
 });
