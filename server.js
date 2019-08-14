@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+//var io = require('socket.io');
+
 var PORTCONFIG = 4000;
 
 var p5SocketId = '';
