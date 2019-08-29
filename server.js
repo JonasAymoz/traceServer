@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 
 
 app.get('/1', function(req, res){
-    res.sendFile(__dirname + '/front/sketch2.html');
+    res.sendFile(__dirname + '/front/sketch1.html');
 });
 
 app.get('/2', function(req, res){
