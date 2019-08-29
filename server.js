@@ -37,7 +37,6 @@ http.listen(PORTCONFIG, function(){
 // Socket actions
 io.on('connection', function(socket){
     
-       
     clientColorArray[socket.id] = getPaletteColor();
 
     socket.on('setUserSessionId', (data) => {
@@ -47,7 +46,7 @@ io.on('connection', function(socket){
         if (users[userId]==null || users[userId].id==''){
             console.log('Store user : ' + userId);
             io.to(p5SocketId).emit('newUser', {'userId' : userId});
-            users[userId] = {'id' : userId };
+            users[userId] = {'id' : userId, 'color' : getPaletteColor() };
         }
     });
     
@@ -61,16 +60,17 @@ io.on('connection', function(socket){
         io.to(p5SocketId).emit('click2', {'color' : getRandomColor()});
     });
 
+    // TODO refacto lastMouse avec la nouvelle liste users
     socket.on('mouse', function (data) {
         let clientId = data.clientId;
         console.log('mouse : ' + data.x + ' ' + data.y + 'for user : ' + clientId);
         if (clientLastMousePosition[clientId] != {} && clientLastMousePosition[clientId] != undefined){
-            io.broadcast.emit('mouse2', {
+            io.to(p5SocketId).emit('mouse2', {
                 'x' : data.x, 
                 'y': data.y, 
                 'lastX' : clientLastMousePosition[clientId].x,
                 'lastY' : clientLastMousePosition[clientId].y,
-                'color' : clientColorArray[data.clientId],
+                'color' : (users[data.clientId])? users[data.clientId].color : black ,
                 'clientId' : clientId
                  });
         }
@@ -82,7 +82,7 @@ io.on('connection', function(socket){
         io.to(p5SocketId).emit('scroll', {
             'position' : data.position,
             'speed': data.speed,
-            'color' : clientColorArray[data.clientId],
+            'color' : (users[data.clientId])? users[data.clientId].color : black ,
             'clientId' : data.clientId,
             'lastX' : (clientLastMousePosition[data.clientId] != undefined)? clientLastMousePosition[data.clientId].x : 0,
             'lastY' : (clientLastMousePosition[data.clientId] != undefined)? clientLastMousePosition[data.clientId].y : 0,
