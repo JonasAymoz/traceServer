@@ -4,6 +4,7 @@
     "description": "Talk 2 me",
     "dependencies": {
         "express": "^4.17.1",
+        "p5.js-svg": "^0.5.2",
         "socket.io": "^2.2.0"
     }
 }

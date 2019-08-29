@@ -1,3 +1,4 @@
+
 var socket;
 var flag;
 var width   = window.innerWidth;
@@ -61,7 +62,7 @@ function onScrollHandle(data) {
 
 // processing sketch
 function setup() {
-    createCanvas(window.innerWidth, window.innerHeight);
+    createCanvas(window.innerWidth, window.innerHeight, SVG);
     background(255);
     fill(255);
     stroke(255);
@@ -81,3 +82,9 @@ function setup() {
 function draw() {
   
 }
+
+function keyTyped() {
+  if (key == "s") {
+  save("image" + ".svg");
+  }
+ }

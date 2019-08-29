@@ -10,25 +10,46 @@ var PORTCONFIG = 4000;
 var p5SocketId = '';
 var clientColorArray = {};
 var clientLastMousePosition = {};
+var users= {};
 
+// Routes configs
 app.get('/', function(req, res){
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/front/home.html');
+});
+
+
+app.get('/1', function(req, res){
+    res.sendFile(__dirname + '/front/sketch2.html');
 });
 
 app.get('/2', function(req, res){
-    res.sendFile(__dirname + '/sketch2.html');
+    res.sendFile(__dirname + '/front/sketch2.html');
 });
 
 // Express Middleware for serving static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 http.listen(PORTCONFIG, function(){
   console.log('listening on *:' + PORTCONFIG);
 });
 
+
+// Socket actions
 io.on('connection', function(socket){
-    console.log('a User is connected with id : ' + socket.id);
+    
+       
     clientColorArray[socket.id] = getPaletteColor();
+
+    socket.on('setUserSessionId', (data) => {
+        var userId = data.userSessionId;
+        console.log('Set user session init : ' + userId);
+        // si user n'est pas dans notre liste, lajouter dans le sketch et MAJ liste
+        if (users[userId]==null || users[userId].id==''){
+            console.log('Store user : ' + userId);
+            io.to(p5SocketId).emit('newUser', {'userId' : userId});
+            users[userId] = {'id' : userId };
+        }
+    });
     
     socket.on('p5socket', (data) => {
         p5SocketId = data.idp5
@@ -72,6 +93,13 @@ io.on('connection', function(socket){
     socket.on('click', function (data) {
         console.log('Received click message');
         io.to(p5SocketId).emit('clickEvent', {'x' : data.x, 'y': data.y,'color' : getRandomColor()});
+    });
+
+    socket.on('visited', function (data) {
+        console.log('Received visited message: ' + data.title);
+        // todo create timeline for each user:
+        let userSessionId = data.userSessionId;
+        io.to(p5SocketId).emit('visited', data);
     });
 
     
