@@ -82,13 +82,12 @@ function setup() {
 }
 
 
-
 function draw() {
   
 }
 
 function keyTyped() {
   if (key == "s") {
-  save("image" + ".svg");
+  save("image" + ".png");
   }
  }

@@ -106,3 +106,9 @@ class User {
 
 }
 
+function keyTyped() {
+  if (key == "s") {
+  save("image" + ".png");
+  }
+ }
+
