@@ -6,8 +6,16 @@ var height  = window.innerHeight;
 
 //socket = io.connect('http://localhost:4000');
 socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
+
+  socket.on('clickEvent', onClickHandle);
+      
+  socket.on('mouse2', onMoveHandle);
+
+  socket.on('scroll', onScrollHandle);
+  
 });
 
 var lastClick={};
@@ -31,7 +39,7 @@ function onClickHandle(data) {
 
 // on move mouse Handle
 function onMoveHandle(data) {
-  console.log('-- Mouse msg received' + old.x);
+  console.log('-- Mouse msg received : ' + old.x);
   var x = data.x*window.innerWidth; 
   var y = data.y*window.innerHeight;
   var lastX = data.lastX*window.innerWidth; 
@@ -51,7 +59,7 @@ function onMoveHandle(data) {
 
 // on scroll Handle
 function onScrollHandle(data) {
-  console.log('-- Scroll msg received' + data.position);
+  console.log('-- Scroll msg received : ' + JSON.stringify(data));
   var position = data.position; 
   stroke(data.color);
   strokeWeight(2);
@@ -62,17 +70,13 @@ function onScrollHandle(data) {
 
 // processing sketch
 function setup() {
-    createCanvas(window.innerWidth, window.innerHeight, SVG);
+    createCanvas(window.innerWidth, window.innerHeight);
     background(255);
     fill(255);
     stroke(255);
     strokeWeight(2);
 
-    socket.on('clickEvent', onClickHandle);
-      
-    socket.on('mouse2', onMoveHandle);
-
-    socket.on('scroll', onScrollHandle);
+  
     
     
 }
