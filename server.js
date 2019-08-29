@@ -65,7 +65,7 @@ io.on('connection', function(socket){
         let clientId = data.clientId;
         console.log('mouse : ' + data.x + ' ' + data.y + 'for user : ' + clientId);
         if (clientLastMousePosition[clientId] != {} && clientLastMousePosition[clientId] != undefined){
-            io.to(p5SocketId).emit('mouse2', {
+            io.broadcast.emit('mouse2', {
                 'x' : data.x, 
                 'y': data.y, 
                 'lastX' : clientLastMousePosition[clientId].x,
