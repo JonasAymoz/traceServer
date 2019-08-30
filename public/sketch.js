@@ -47,7 +47,7 @@ function onMoveHandle(data) {
 
   if (old != {}){
     fill(255);
-    stroke(data.color);
+    //stroke(data.color);
     strokeWeight(2);
     line(x,y, lastX, lastY);
   }
@@ -61,7 +61,7 @@ function onMoveHandle(data) {
 function onScrollHandle(data) {
   console.log('-- Scroll msg received : ' + JSON.stringify(data));
   var position = data.position; 
-  stroke(data.color);
+  //stroke(data.color);
   strokeWeight(2);
   line(data.lastX*window.innerWidth-20, data.lastY*window.innerHeight+position, data.lastX*window.innerWidth+20, data.lastY*window.innerHeight+position);
 }
@@ -71,7 +71,7 @@ function onScrollHandle(data) {
 // processing sketch
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
-    background(255);
+    background(0);
     fill(255);
     stroke(255);
     strokeWeight(2);
