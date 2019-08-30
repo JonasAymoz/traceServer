@@ -70,7 +70,7 @@ io.on('connection', function(socket){
                 'y': data.y, 
                 'lastX' : clientLastMousePosition[clientId].x,
                 'lastY' : clientLastMousePosition[clientId].y,
-                'color' : (users[data.clientId])? users[data.clientId].color : black ,
+                'color' : (users[data.clientId])? users[data.clientId].color : 'black' ,
                 'clientId' : clientId
                  });
         }
@@ -82,7 +82,7 @@ io.on('connection', function(socket){
         io.to(p5SocketId).emit('scroll', {
             'position' : data.position,
             'speed': data.speed,
-            'color' : (users[data.clientId])? users[data.clientId].color : black ,
+            'color' : (users[data.clientId])? users[data.clientId].color : 'black' ,
             'clientId' : data.clientId,
             'lastX' : (clientLastMousePosition[data.clientId] != undefined)? clientLastMousePosition[data.clientId].x : 0,
             'lastY' : (clientLastMousePosition[data.clientId] != undefined)? clientLastMousePosition[data.clientId].y : 0,
