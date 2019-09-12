@@ -45,9 +45,11 @@ io.on('connection', function(socket){
         // si user n'est pas dans notre liste, lajouter dans le sketch et MAJ liste
         if (users[userId]==null || users[userId].id==''){
             console.log('Store user : ' + userId);
-            io.to(p5SocketId).emit('newUser', {'userId' : userId});
+            //io.to(p5SocketId).emit('newUser', {'userId' : userId});
             users[userId] = {'id' : userId, 'color' : getPaletteColor() };
         }
+        // s'il est dans notre liste, l'ajouter dans le sketch
+        io.to(p5SocketId).emit('newUser', {'userId' : userId});
     });
     
     socket.on('p5socket', (data) => {

@@ -4,8 +4,8 @@ var flag;
 var width   = window.innerWidth;
 var height  = window.innerHeight;
 
-//socket = io.connect('http://localhost:4000');
-socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+socket = io.connect(config.env);
+//socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
@@ -76,11 +76,7 @@ function setup() {
     background(255);
     fill(255);
     stroke(255);
-    strokeWeight(2);
-
-  
-    
-    
+    strokeWeight(2);    
 }
 
 
