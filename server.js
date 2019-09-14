@@ -17,13 +17,16 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/front/home.html');
 });
 
-
 app.get('/1', function(req, res){
     res.sendFile(__dirname + '/front/sketch1.html');
 });
 
 app.get('/2', function(req, res){
     res.sendFile(__dirname + '/front/sketch2.html');
+});
+
+app.get('/3', function(req, res){
+    res.sendFile(__dirname + '/front/sketch3.html');
 });
 
 // Express Middleware for serving static files
