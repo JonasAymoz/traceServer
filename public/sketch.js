@@ -23,8 +23,7 @@ socket.on('connect', function (socketObj) {
 function onClickHandle(data) {
   var x = data.x*window.innerWidth; 
   var y = data.y*window.innerHeight;
-  //Math.log
-  console.log('---' + data.x + ' =' + lastClick.x );
+  //console.log('---' + data.x + ' =' + lastClick.x );
   stroke(30);
   strokeWeight(2);
   fill(data.color);
@@ -35,7 +34,7 @@ function onClickHandle(data) {
 
 // on move mouse Handle
 function onMoveHandle(data) {
-  console.log('-- Mouse msg received : ' + data.y +' // '+ Math.log(data.y*4) + ' // '+ Math.log(data.y*2) );
+  //console.log('-- Mouse msg received : ' + data.y +' // '+ Math.log(data.y*4) + ' // '+ Math.log(data.y*2) );
   var x = data.x*window.innerWidth; 
   var y = data.y*window.innerHeight;
   var lastX = data.lastX*window.innerWidth; 
@@ -55,10 +54,9 @@ function onMoveHandle(data) {
 
 // on scroll Handle
 function onScrollHandle(data) {
-  console.log('-- Scroll msg received : ' + JSON.stringify(data));
+  //console.log('-- Scroll msg received : ' + JSON.stringify(data));
   var position = data.position; 
   stroke(data.color);
-  //stroke('#FFFFFFF');
   strokeWeight(2);
   line(data.lastX*window.innerWidth-20, data.lastY*window.innerHeight+position, data.lastX*window.innerWidth+20, data.lastY*window.innerHeight+position);
   line(data.lastX*window.innerWidth, old.y = data.lastY*window.innerHeight+position);
