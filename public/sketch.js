@@ -7,8 +7,8 @@ var lastClick={};
 var old = {};
 var mousePosition={};
 
-socket = io.connect(config.env);
-//socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+//socket = io.connect(config.env);
+socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
