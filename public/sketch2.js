@@ -6,8 +6,8 @@ var height  = window.innerHeight;
 var userArray = {};
 var xOff = 0.02;
 
-//socket = io.connect(config.env);
-socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+socket = io.connect(config.env, config.envPath);
+//socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
 });
@@ -39,9 +39,7 @@ function newUser(data) {
 // on scroll Handle
 function onVisited(data) {
   userArray[data.userSessionId].newSite(data.title);
-  
 }
-
 
 
 
@@ -60,8 +58,7 @@ function setup() {
 }
 
 
-function draw() {
-  
+function draw() {  
   for (let i=0; i<Object.keys(userArray).length ; i++ ) {
     userArray[Object.keys(userArray)[i]].show();
     //console.log(userArray[i]);

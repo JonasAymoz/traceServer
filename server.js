@@ -3,12 +3,9 @@ var express = require('express');
 var path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-//var io = require('socket.io');
 
 var PORTCONFIG = 4000;
-
 var p5SocketId = '';
-var clientColorArray = {};
 var clientLastMousePosition = {};
 var users= {};
 
@@ -29,6 +26,10 @@ app.get('/3', function(req, res){
     res.sendFile(__dirname + '/front/sketch3.html');
 });
 
+app.get('/4', function(req, res){
+    res.sendFile(__dirname + '/front/sketch4.html');
+});
+
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -39,17 +40,16 @@ http.listen(PORTCONFIG, function(){
 
 // Socket actions
 io.on('connection', function(socket){
-    
-    clientColorArray[socket.id] = getPaletteColor();
 
     socket.on('setUserSessionId', (data) => {
         var userId = data.userSessionId;
         console.log('Set user session init : ' + userId);
         // si user n'est pas dans notre liste, lajouter dans le sketch et MAJ liste
         if (users[userId]==null || users[userId].id==''){
-            console.log('Store user : ' + userId);
+            let color = getPaletteColor();
             //io.to(p5SocketId).emit('newUser', {'userId' : userId});
-            users[userId] = {'id' : userId, 'color' : getPaletteColor() };
+            users[userId] = {'id' : userId, 'color' : color };
+            console.log('Store user : ' + userId + '  color : ' +color);
         }
         // s'il est dans notre liste, l'ajouter dans le sketch
         io.to(p5SocketId).emit('newUser', {'userId' : userId});
@@ -68,19 +68,18 @@ io.on('connection', function(socket){
     // TODO refacto lastMouse avec la nouvelle liste users
     socket.on('mouse', function (data) {
         let clientId = data.clientId;
-        console.log('mouse : ' + data.x + ' ' + data.y + 'for user : ' + clientId);
+        //console.log('mouse : ' + data.x + ' ' + data.y + 'for user : ' + clientId);
         if (clientLastMousePosition[clientId] != {} && clientLastMousePosition[clientId] != undefined){
             io.to(p5SocketId).emit('mouse2', {
                 'x' : data.x, 
-                'y': data.y, 
+                'y': data.y,
                 'lastX' : clientLastMousePosition[clientId].x,
                 'lastY' : clientLastMousePosition[clientId].y,
                 'color' : (users[data.clientId])? users[data.clientId].color : 'black' ,
                 'clientId' : clientId
                  });
         }
-        clientLastMousePosition[clientId] = {'x' : data.x, 'y': data.y, 'color' : clientColorArray[data.clientId]};
-        
+        clientLastMousePosition[clientId] = {'x' : data.x, 'y': data.y};  
     });
 
     socket.on('scroll', function (data) {
@@ -107,7 +106,12 @@ io.on('connection', function(socket){
         io.to(p5SocketId).emit('visited', data);
     });
 
-    
+    socket.on('thirdParty', function (data) {
+        //console.log('Received third party message: ' + data.url);
+        // Todo create blobs for each thirdparty:
+        let userSessionId = data.userSessionId;
+        io.to(p5SocketId).emit('thirdParty', data);
+    });   
 });
 
 

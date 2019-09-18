@@ -1,4 +1,6 @@
 var config = {
-    
-    env:"'https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'}'"
+    env: 'http://localhost:4000', 
+    prod:'https://jonasaymoz.fr',
+    envPath : ''
+    //envPath : { path: '/ctc/traceServer/socket.io'}
   }
