@@ -28,7 +28,7 @@ function onClickHandle(data) {
   stroke(30);
   strokeWeight(2);
   fill(data.color);
-  ellipse(x,y, 4,4);
+  ellipse(old.x,old.y, 4,4);
   lastClick = {'x' : x, 'y': y};
 }
 
