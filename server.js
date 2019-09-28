@@ -136,7 +136,7 @@ io.on('connection', function(socket){
     socket.on('cookie', function (data) {
         //console.log('Received cookie ' + JSON.stringify(data, null,2));
         if(data.cause == 'explicit'){
-            io.to(p5SocketId).emit('cookie', data);
+           // io.to(p5SocketId).emit('cookie', data);
         }
         
     });
