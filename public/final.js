@@ -201,6 +201,7 @@ function resetCanvas(){
   organics = [];
   lineArray=[];
   textArray = [];
+  cookieArray = [];
 }
 
 
