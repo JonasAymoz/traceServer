@@ -161,8 +161,8 @@ function draw() {
   }
   for(var k=0; k<cookieArray.length;k++){
     //console.log('cookieprint');
-    fill(255,255,255,100);
-    noStroke();
+    //fill(255,255,255,100);
+    //noStroke();
     ellipse(cookieArray[k].x,cookieArray[k].y, 1, 1);
     //text(cookieArray[k].name, cookieArray[k].x, cookieArray[k].y);
   }
