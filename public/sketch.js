@@ -18,7 +18,6 @@ socket.on('connect', function (socketObj) {
 });
 
 
-
 // on Click Handle
 function onClickHandle(data) {
   var x = data.x*window.innerWidth; 

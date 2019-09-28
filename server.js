@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var request = require('request');
+
 
 var PORTCONFIG = 4000;
 var p5SocketId = '';
@@ -30,12 +32,19 @@ app.get('/4', function(req, res){
     res.sendFile(__dirname + '/front/sketch4.html');
 });
 
+app.get('/final', function(req, res){
+    res.sendFile(__dirname + '/front/final.html');
+});
+
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, '/public')));
 
 http.listen(PORTCONFIG, function(){
   console.log('listening on *:' + PORTCONFIG);
 });
+
+
+
 
 
 // Socket actions
@@ -68,8 +77,8 @@ io.on('connection', function(socket){
     // TODO refacto lastMouse avec la nouvelle liste users
     socket.on('mouse', function (data) {
         let clientId = data.clientId;
-        //console.log('mouse : ' + data.x + ' ' + data.y + 'for user : ' + clientId);
-        if (clientLastMousePosition[clientId] != {} && clientLastMousePosition[clientId] != undefined){
+        //console.log('Server mouse : ' + data.x + ' ' + data.y + 'for user : ' + clientId);
+        if(clientLastMousePosition[clientId] != {} && clientLastMousePosition[clientId] != undefined){
             io.to(p5SocketId).emit('mouse2', {
                 'x' : data.x, 
                 'y': data.y,
@@ -103,15 +112,34 @@ io.on('connection', function(socket){
         console.log('Received visited message: ' + data.title);
         // todo create timeline for each user:
         let userSessionId = data.userSessionId;
+        /* request('data.url', { json: true }, (err, res, body) => {
+            if (err) { return console.log(err); }
+            console.log(body);
+            console.log(body.explanation);
+            data.code = body;
+          }); */
+
         io.to(p5SocketId).emit('visited', data);
     });
 
     socket.on('thirdParty', function (data) {
-        //console.log('Received third party message: ' + data.url);
+        console.log('Received server third party message: ' + data.url);
         // Todo create blobs for each thirdparty:
         let userSessionId = data.userSessionId;
         io.to(p5SocketId).emit('thirdParty', data);
-    });   
+    });  
+    
+    socket.on('keyboardInput', function (data) {
+        //console.log('received keyboardInput ' + data.value);
+        io.to(p5SocketId).emit('keyboardInput', data);
+    });
+    socket.on('cookie', function (data) {
+        //console.log('Received cookie ' + JSON.stringify(data, null,2));
+        if(data.cause == 'explicit'){
+            io.to(p5SocketId).emit('cookie', data);
+        }
+        
+    });
 });
 
 
