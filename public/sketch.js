@@ -7,8 +7,8 @@ var lastClick={};
 var old = {};
 var mousePosition={};
 
-//socket = io.connect(config.env);
-socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+socket = io.connect(config.env);
+//socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
@@ -25,14 +25,14 @@ function onClickHandle(data) {
   //console.log('---' + data.x + ' =' + lastClick.x );
   stroke(30);
   strokeWeight(2);
-  fill(data.color);
+  fill(data.color.r, data.color.g, data.color.b);
   ellipse(old.x,old.y, 4,4);
   lastClick = {'x' : x, 'y': y};
 }
 
 
 // on move mouse Handle
-function onMoveHandle(data) {
+/* function onMoveHandle(data) {
   //console.log('-- Mouse msg received : ' + data.y +' // '+ Math.log(data.y*4) + ' // '+ Math.log(data.y*2) );
   var x = data.x*window.innerWidth; 
   var y = data.y*window.innerHeight;
@@ -44,6 +44,34 @@ function onMoveHandle(data) {
     stroke(data.color);
     strokeWeight(2);
     line(x,y, lastX, lastY);
+  }
+  old = {
+    'x' : x,
+    'y' : y
+  };
+} */
+
+
+// on move mouse Handle
+function onMoveHandle(data) {
+  console.log('-- Mouse msg received : ' + data.y +' // '+ Math.log(data.y*4) + ' // '+ Math.log(data.y*2) );
+  var x = data.x*window.innerWidth; 
+  var y = data.y*window.innerHeight;
+  var lastX = data.lastX*window.innerWidth; 
+  var lastY = data.lastY*window.innerHeight;
+  userMouseX = data.x*window.innerWidth; 
+  userMouseY = data.y*window.innerHeight;
+
+  if(mousePointArray.length > 2){
+    lineArray.push(new Line(x,y,mousePointArray[mousePointArray.length-1].x,mousePointArray[mousePointArray.length-1].y, data.color, mousePointArray[mousePointArray.length-2].x, mousePointArray[mousePointArray.length-2].y));
+    lineArraySize++;
+  }
+    mousePointArray.push({'x':x,'y':y});
+    //console.log(lineArraySize + '-' + mousePointArray.length+'--' + old.x );
+  if (old != {}){
+    fill(255); 
+    strokeWeight(0.5);   
+    //line(x,y, lastX, lastY);
   }
   old = {
     'x' : x,
@@ -75,6 +103,10 @@ function setup() {
 
 
 function draw() {
+  let fps = frameRate();
+  fill(255);
+  stroke(0);
+  text("FPS: " + fps.toFixed(2), 10, height - 10);
   
 }
 

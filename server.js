@@ -111,7 +111,6 @@ io.on('connection', function(socket){
     socket.on('visited', function (data) {
         console.log('Received visited message: ' + data.title);
         // todo create timeline for each user:
-        let userSessionId = data.userSessionId;
         /* request('data.url', { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }
             console.log(body);
@@ -123,10 +122,19 @@ io.on('connection', function(socket){
     });
 
     socket.on('thirdParty', function (data) {
-        console.log('Received server third party message: ' + data.url);
+        console.log('Received server third party message: ' + JSON.stringify(data, null,2));
         // Todo create blobs for each thirdparty:
         let userSessionId = data.userSessionId;
+        data.domain = domain_from_url(data.url);
         io.to(p5SocketId).emit('thirdParty', data);
+        /* {
+            "iframe": false,
+            "ip": "::1",
+            "secure": false,
+            "timeStamp": 1569754581840.921,
+            "type": "xmlhttprequest",
+            "url": "http://localhost/socket.io/"
+          } */
     });  
     
     socket.on('keyboardInput', function (data) {
@@ -136,7 +144,7 @@ io.on('connection', function(socket){
     socket.on('cookie', function (data) {
         //console.log('Received cookie ' + JSON.stringify(data, null,2));
         if(data.cause == 'explicit'){
-           // io.to(p5SocketId).emit('cookie', data);
+            io.to(p5SocketId).emit('cookie', data);
         }
         
     });
@@ -149,8 +157,24 @@ function getRandomColor (){
 }
 
 function getPaletteColor(){
+    // blue violet
+    let paletNeon1 = [ '#3CB9FC', '#B537F2', '#8A2BE2', '#120052'];
+    let paletNeonRGB = [{'r' :60, 'g':185, 'b':252},{'r' :181, 'g':55, 'b':242},{'r' :138, 'g':43, 'b':226}, {'r' :18, 'g':0, 'b':82} ]
+    // multi color
+    let paletNeon2 = ['#3B27BA', '#E847AE', '#13CA91', '#FF9472'];
     let palet =['#00429d', '#56408c', '#793e7b', '#943b6b', '#ac385a', '#c23249', '#d72a37', '#eb1e22', '#ff0000'];
-    return palet[Math.floor(Math.random() * palet.length)]; 
+    return paletNeonRGB[Math.floor(Math.random() * paletNeon2.length)]; 
 }
 
 
+function domain_from_url(url) {
+    var result
+    var match
+    if (match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n\?\=]+)/im)) {
+        result = match[1]
+        if (match = result.match(/^[^\.]+\.(.+\..+)$/)) {
+            result = match[1]
+        }
+    }
+    return result
+}
