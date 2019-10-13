@@ -14,8 +14,8 @@ var NOISE_SCALE = 40;
 
 var change,off,zoff;
 
-//socket = io.connect(config.env);
-socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+socket = io.connect(config.env);
+//socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', {'idp5' : socket.id});
   console.log("client connection");
@@ -86,6 +86,11 @@ function draw() {
   change+=0.02;
   zoff += 0.02;
   //off+=0.05;
+
+  let fps = frameRate();
+  fill(255);
+  stroke(0);
+  text("FPS: " + fps.toFixed(2), 10, height - 10);
 }
 
 
