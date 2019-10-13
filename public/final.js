@@ -35,7 +35,7 @@ socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', { 'idp5': socket.id });
   socket.on('mouse2', onMoveHandle);
-  socket.on('scroll', onScrollHandle);
+  //socket.on('scroll', onScrollHandle);
   socket.on('thirdParty', onThirdParty);
   socket.on('keyboardInput', onKeyboardInput);
   socket.on('cookie', onCookie);
@@ -107,6 +107,7 @@ function onThirdParty(data) {
     case 'xmlhttprequest': colorBlob = paletNeonRGB[2]; break;
     default: colorBlob = paletNeonRGB[3]; break;
   }
+  text(data.url, 10, height - 10);
   organics.push(new Organic(0.1 + 1 * size, random(width), random(height), size / 3, random(100) * random(90), colorBlob, data.url));
 }
 
