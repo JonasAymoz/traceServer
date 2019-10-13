@@ -16,8 +16,8 @@ var colorsPalette;
 var px_offset = 0;    // amplitude
 var NOISE_SCALE = 40;
 var lineArraySize = 0;
-let paletNeonRGB = [{ 'r': 60, 'g': 185, 'b': 252 }, { 'r': 181, 'g': 55, 'b': 242 }, { 'r': 138, 'g': 43, 'b': 226 }, { 'r': 18, 'g': 0, 'b': 82 }]
-
+let paletNeonRGB = [{ 'r': 2, 'g': 27, 'b': 220 }, { 'r': 181, 'g': 55, 'b': 242 }, { 'r': 138, 'g': 43, 'b': 226 }, { 'r': 18, 'g': 0, 'b': 82 }]
+var lastTracking='';
 var flag;
 var lastClick = {};
 var old = {};
@@ -107,7 +107,7 @@ function onThirdParty(data) {
     case 'xmlhttprequest': colorBlob = paletNeonRGB[2]; break;
     default: colorBlob = paletNeonRGB[3]; break;
   }
-  text(data.url, 10, height - 10);
+  lastTracking = data.url;
   organics.push(new Organic(0.1 + 1 * size, random(width), random(height), size / 3, random(100) * random(90), colorBlob, data.url));
 }
 
@@ -210,9 +210,9 @@ function draw() {
   let fps = frameRate();
   fill(255);
   stroke(0);
-  text("FPS: " + fps.toFixed(2), 10, height - 10);
-  text("cookie: " + cookieArray.length.toFixed(2), 10, height - 30);
-
+  //text("FPS: " + fps.toFixed(2), 10, height - 10);
+  text("Cookies: " + cookieArray.length.toFixed(2), 10, height - 30);
+  text('Last Tracker : ' +lastTracking, 10, height - 10);
 
   if (millis() - cleaner > 5000){
     let tempArray = lineArray.filter(function(value, index, arr){
