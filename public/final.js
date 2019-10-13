@@ -219,7 +219,7 @@ function draw() {
       return value.opacity > 5;
     });
     let tempCookieArray = cookieArray.filter(function(value, index, arr){
-      return millis() - value.dateOfBirth < 5000;
+      return millis() - value.dateOfBirth < 4000;
     });
     //console.log(lineArray.length +" new size : " + tempArray.length);
     console.log(cookieArray.length +" cookie new size : " + cookieArray.length);
