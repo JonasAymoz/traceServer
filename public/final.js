@@ -12,11 +12,14 @@ var lineArray = [];
 var mousePointArray = [];
 var textArray = [];
 var cookieArray = [];
-var colorsPalette;
 var px_offset = 0;    // amplitude
 var NOISE_SCALE = 40;
 var lineArraySize = 0;
-let paletNeonRGB = [{ 'r': 2, 'g': 27, 'b': 220 }, { 'r': 181, 'g': 55, 'b': 242 }, { 'r': 138, 'g': 43, 'b': 226 }, { 'r': 18, 'g': 0, 'b': 82 }]
+let paletNeonRGB = [
+  { 'r': 2, 'g': 27, 'b': 220 }, // flashblue
+ { 'r': 181, 'g': 55, 'b': 242 }, // pink flash
+  { 'r': 117, 'g': 0, 'b': 226 }, // violet 
+   { 'r': 2, 'g': 220, 'b': 195 }] // green
 var lastTracking='';
 var flag;
 var lastClick = {};
@@ -30,8 +33,8 @@ var change, off, zoff;
 //
 // ------------ Socket connection -----------------------------
 //
-//socket = io.connect(config.env);
-socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
+socket = io.connect(config.env);
+//socket = io.connect('https://jonasaymoz.fr',{ path: '/ctc/traceServer/socket.io'})
 socket.on('connect', function (socketObj) {
   socket.emit('p5socket', { 'idp5': socket.id });
   socket.on('mouse2', onMoveHandle);
@@ -102,10 +105,10 @@ function onThirdParty(data) {
   var size = data.url.length;
   let colorBlob;
   switch (data.type) {
-    case 'image': colorBlob = paletNeonRGB[0]; break;
-    case 'script': colorBlob = paletNeonRGB[1]; break;
-    case 'xmlhttprequest': colorBlob = paletNeonRGB[2]; break;
-    default: colorBlob = paletNeonRGB[3]; break;
+    case 'image': colorBlob = paletNeonRGB[0]; break; // blue
+    case 'script': colorBlob = paletNeonRGB[1]; break; // pink
+    case 'xmlhttprequest': colorBlob = paletNeonRGB[2]; break; // violet
+    default: colorBlob = paletNeonRGB[3]; break; // green
   }
   lastTracking = data.url;
   organics.push(new Organic(0.1 + 1 * size, random(width), random(height), size / 3, random(100) * random(90), colorBlob, data.url));
